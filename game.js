@@ -4,13 +4,17 @@ const board = document.querySelector('.board')
 const winningMessage = document.querySelector('.wins')
 const winner = document.querySelector('.game-winning')
 const restartBtn = document.querySelector('.restart')
+const vsPlayer = document.querySelector('#player')
+const vsComputer = document.querySelector('#computer')
+const pickVs = document.querySelector('.choose-game-text')
+const whosTurn = document.querySelector('.turn')
 const player1 = 'x'
 const player2 = 'o'
 let player2Turn
 
 const winCombo = [
     [0,1,2],
-    [4,5,6],
+    [3,4,5],
     [6,7,8],
     [0,3,6],
     [1,4,7],
@@ -19,21 +23,33 @@ const winCombo = [
     [2,4,6]
 ]
 
+pickVs.innerText = 'Pick an opponent';
 
-startGame()
+vsPlayer.addEventListener('click', startGame);
 
-restartBtn.addEventListener('click', startGame)
-
-function startGame() {
-    player2Turn = false
+restartBtn.addEventListener('click', () => {
     cells.forEach(cell => {
         cell.classList.remove(player1)
         cell.classList.remove(player2)
         cell.removeEventListener('click', handleClick)
+    })
+    vsPlayer.classList.remove('active')
+    board.classList.remove(player1)
+    board.classList.remove(player2)
+    pickVs.innerText = 'Pick an opponent';
+    winner.classList.remove('show') 
+    whosTurn.innerText = ``
+})
+
+function startGame() {
+    player2Turn = false
+    cells.forEach(cell => {
         cell.addEventListener('click', handleClick, {once: true})
     })
+    pickVs.innerText = '';
+    vsPlayer.classList.add('active')
+    whosTurn.innerText = `X's turn!`
     setBoardHoverClass()
-    winner.classList.remove('show') 
 }
 
 
@@ -48,6 +64,11 @@ function handleClick(e) {
     } else {
         swapTurns()
         setBoardHoverClass()
+        if(currentClass == player2) {
+            whosTurn.innerText = `X's turn!`
+        }else {
+            whosTurn.innerText = `O's turn!`
+        }
     }
 }
 
@@ -56,6 +77,7 @@ function endGame(draw) {
         winningMessage.innerText = 'Draw!'
     }else {
         winningMessage.innerText = `${player2Turn ? 'O' : 'X'} Wins!`
+        whosTurn.innerText = `${player2Turn ? 'O' : 'X'} Wins!`
     }
     winner.classList.add('show')
 }

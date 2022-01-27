@@ -22,6 +22,12 @@ body {
     align-items: center;
 }
 
+.turn {
+    position: fixed;
+    top: 20%;
+    font-size: 2em;
+}
+
 .line1, .line2, .line3 {
     display: flex;
 }
@@ -125,7 +131,41 @@ body {
     background-color: white;
 }
 
+.choose-game-text {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    bottom: 18%;
+    font-size: 2.5em;
+}
 
+.choose-game{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    bottom: 10%;
+}
+
+.choose-game button {
+    font-size: 1em;
+    padding: 0.4em;
+    margin: 0 .5em;
+    background-color: white;
+    border: 2px solid black;
+}
+
+
+.choose-game button:hover {
+    background-color: black;
+    border: 2px solid white;
+    color: white;
+}
+
+.choose-game button.active {
+    background-color: black;
+    border: 2px solid white;
+    color: white;
+}
 
 .game-winning{
     display: none;
@@ -146,7 +186,7 @@ body {
     margin-bottom: 0.25em;
 }
 
-button{
+.restart{
     font-size: 3rem;
     padding: 0.2em;
     border: 2px solid black;
@@ -154,7 +194,7 @@ button{
     cursor: pointer;
 }
 
-button:hover {
+.restart:hover {
     background-color: black;
     border: 2px solid white;
     color: white;
