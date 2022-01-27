@@ -1,0 +1,166 @@
+*, *::after, *::before{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.container{
+    position: relative;
+}
+
+.board{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.line1, .line2, .line3 {
+    display: flex;
+}
+
+.cell {
+    border: 2px solid black;
+    width: 100px;
+    height: 100px;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.line1 .cell {
+    border-top: none;
+}
+
+.line3 .cell {
+    border-bottom: none;
+}
+
+.line1, .line2, .line3, .cell:first-child {
+    border-left: none;
+}
+
+
+.line1, .line2, .line3, .cell:last-child {
+    border-right: none;
+}
+
+.cell.x:hover {
+    cursor: not-allowed;
+}
+
+.cell.o:hover {
+    cursor: not-allowed;
+}
+
+.cell.x::before, 
+.cell.x::after {
+    background-color: black;
+}
+
+.board.x .cell:not(.x):not(.o):hover::before,
+.board.x .cell:not(.x):not(.o):hover::after {
+    background-color: lightgrey;
+}
+
+.cell.x::before, 
+.cell.x::after,
+.board.x .cell:not(.x):not(.o):hover::before,
+.board.x .cell:not(.x):not(.o):hover::after {
+    content: '';
+    position: fixed;
+    width: 8px;
+    height: 90px;
+    align-self: center;
+}
+
+.cell.x::before,
+.board.x .cell:not(.x):not(.o):hover::before {
+    transform: rotate(45deg);
+}
+.cell.x::after,
+.board.x .cell:not(.x):not(.o):hover::after {
+    transform: rotate(-45deg);
+}
+
+.cell.o::before, 
+.cell.o::after {
+    background-color: black;
+}
+
+.board.o .cell:not(.x):not(.o):hover::before,
+.board.o .cell:not(.x):not(.o):hover::after {
+    background-color: lightgrey;
+}
+
+.cell.o::before, 
+.cell.o::after,
+.board.o .cell:not(.x):not(.o):hover::before,
+.board.o .cell:not(.x):not(.o):hover::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    align-self: center;
+}
+
+.cell.o::before,
+.board.o .cell:not(.x):not(.o):hover::before {
+    width: 90px;
+    height: 90px;
+}
+.cell.o::after,
+.board.o .cell:not(.x):not(.o):hover::after {
+    width: 70px;
+    height: 70px;
+    background-color: white;
+}
+
+
+
+.game-winning{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.9);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.wins {
+    font-size: 5rem;
+    margin-bottom: 0.25em;
+}
+
+button{
+    font-size: 3rem;
+    padding: 0.2em;
+    border: 2px solid black;
+    background-color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: black;
+    border: 2px solid white;
+    color: white;
+}
+
+.game-winning.show {
+    display: flex;
+}
+
