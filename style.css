@@ -129,7 +129,7 @@ button {
 .board.o .cell:not(.x):not(.o):hover::before,
 .board.o .cell:not(.x):not(.o):hover::after {
     content: '';
-    position: fixed;
+    position: absolute;
     border-radius: 50%;
     align-self: center;
 }
