@@ -20,6 +20,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 .turn {
@@ -32,6 +33,7 @@ body {
     display: flex;
 }
 
+
 .cell {
     border: 2px solid black;
     width: 100px;
@@ -41,6 +43,7 @@ body {
     cursor: pointer;
     position: relative;
     display: flex;
+    flex-direction: column;
     justify-content: center;
 }
 
@@ -84,19 +87,20 @@ body {
 .board.x .cell:not(.x):not(.o):hover::before,
 .board.x .cell:not(.x):not(.o):hover::after {
     content: '';
-    position: fixed;
-    width: 8px;
-    height: 90px;
+    display: block;
+    width: 90px;
+    height: 8px;
+    margin: 16px;
     align-self: center;
 }
 
 .cell.x::before,
 .board.x .cell:not(.x):not(.o):hover::before {
-    transform: rotate(45deg);
+    transform: rotate(45deg) translate(14px, 14px);
 }
 .cell.x::after,
 .board.x .cell:not(.x):not(.o):hover::after {
-    transform: rotate(-45deg);
+    transform: rotate(-45deg) translate(14px, -14px);
 }
 
 .cell.o::before, 
@@ -148,10 +152,13 @@ body {
 
 .choose-game button {
     font-size: 1em;
-    padding: 0.4em;
+    padding: 0.5em;
     margin: 0 .5em;
     background-color: white;
     border: 2px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 
