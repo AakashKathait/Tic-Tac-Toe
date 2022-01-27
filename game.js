@@ -26,13 +26,16 @@ const winCombo = [
     [2,4,6]
 ]
 
+function openApp() {
 pickVs.innerText = 'Pick an opponent';
-
 vsPlayer.style.display = 'block'
 vsComputer.style.display = 'block'
 
 vsPlayer.addEventListener('click', startGame);
 vsComputer.addEventListener('click', chooseMode)
+}
+
+openApp();
 
 async function chooseMode() {
     let easyBtn = document.createElement('button')
@@ -51,6 +54,7 @@ async function chooseMode() {
     vsComputer.classList.add('active')
     easyBtn.addEventListener('click', easyGame)
     hardBtn.addEventListener('click', hardGame)
+    vsComputer.removeEventListener('click', chooseMode)
 }
 
 function easyGame() {
@@ -63,10 +67,10 @@ function hardGame() {
     pickVs.innerHTML= ``
     gameMode.innerText= `Hard Mode`
     vsComputer.classList.add('active')
-    vsPlayer.removeEventListener('click');
 }
 
 restartBtn.addEventListener('click', () => {
+    openApp();
     cells.forEach(cell => {
         cell.classList.remove(player1)
         cell.classList.remove(player2)
@@ -93,6 +97,7 @@ function startGame() {
     whosTurn.innerText = `X's turn!`
     setBoardHoverClass()
     vsComputer.style.display = 'none'
+    vsPlayer.removeEventListener('click', startGame)
 }
 
 
