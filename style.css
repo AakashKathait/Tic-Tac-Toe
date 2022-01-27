@@ -7,6 +7,11 @@
 body {
     margin: 0;
     padding: 0;
+    font-family: 'Press Start 2P', cursive;
+}
+
+button {
+    font-family: 'Press Start 2P', cursive;
 }
 
 .container{
@@ -21,6 +26,12 @@ body {
     justify-content: center;
     align-items: center;
     position: relative;
+}
+
+.game-mode {
+    position: absolute;
+    top: 10%;
+    font-size: 2em;
 }
 
 .turn {
@@ -150,6 +161,24 @@ body {
     bottom: 10%;
 }
 
+.easy, .hard {
+    font-size: 0.7em;
+    padding: 0.4em;
+    margin: 0 .5em;
+    background-color: white;
+    border: 2px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.easy:hover, .hard:hover {
+    background-color: black;
+    border: 2px solid white;
+    color: white;
+}
+
 .choose-game button {
     font-size: 1em;
     padding: 0.5em;
@@ -189,12 +218,12 @@ body {
 }
 
 .wins {
-    font-size: 5rem;
+    font-size: 3rem;
     margin-bottom: 0.25em;
 }
 
 .restart{
-    font-size: 3rem;
+    font-size: 2rem;
     padding: 0.2em;
     border: 2px solid black;
     background-color: white;

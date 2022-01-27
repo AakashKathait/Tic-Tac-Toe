@@ -8,6 +8,9 @@ const vsPlayer = document.querySelector('#player')
 const vsComputer = document.querySelector('#computer')
 const pickVs = document.querySelector('.choose-game-text')
 const whosTurn = document.querySelector('.turn')
+const gameMode = document.querySelector('.game-mode')
+const easyMode = document.querySelector('.easy')
+const hardMode = document.querySelector('.hard')
 const player1 = 'x'
 const player2 = 'o'
 let player2Turn
@@ -25,7 +28,43 @@ const winCombo = [
 
 pickVs.innerText = 'Pick an opponent';
 
+vsPlayer.style.display = 'block'
+vsComputer.style.display = 'block'
+
 vsPlayer.addEventListener('click', startGame);
+vsComputer.addEventListener('click', chooseMode)
+
+async function chooseMode() {
+    let easyBtn = document.createElement('button')
+    let hardBtn = document.createElement('button')
+    vsPlayer.style.display = 'none'
+
+
+    easyBtn.classList.add('easy')
+    easyBtn.innerText = 'Easy'
+    hardBtn.classList.add('hard')
+    hardBtn.innerText = 'Hard'
+    pickVs.innerText = '';
+    pickVs.appendChild(easyBtn)
+    pickVs.appendChild(hardBtn)
+
+    vsComputer.classList.add('active')
+    easyBtn.addEventListener('click', easyGame)
+    hardBtn.addEventListener('click', hardGame)
+}
+
+function easyGame() {
+    pickVs.innerHTML= ``
+    gameMode.innerText= `Easy Mode`
+    vsComputer.classList.add('active')
+}
+
+function hardGame() {
+    pickVs.innerHTML= ``
+    gameMode.innerText= `Hard Mode`
+    vsComputer.classList.add('active')
+    vsPlayer.removeEventListener('click');
+}
 
 restartBtn.addEventListener('click', () => {
     cells.forEach(cell => {
@@ -33,7 +72,10 @@ restartBtn.addEventListener('click', () => {
         cell.classList.remove(player2)
         cell.removeEventListener('click', handleClick)
     })
+    vsPlayer.style.display = 'block'
+    vsComputer.style.display = 'block'
     vsPlayer.classList.remove('active')
+    vsComputer.classList.remove('active')
     board.classList.remove(player1)
     board.classList.remove(player2)
     pickVs.innerText = 'Pick an opponent';
@@ -50,6 +92,7 @@ function startGame() {
     vsPlayer.classList.add('active')
     whosTurn.innerText = `X's turn!`
     setBoardHoverClass()
+    vsComputer.style.display = 'none'
 }
 
 
