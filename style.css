@@ -24,8 +24,8 @@ body {
 }
 
 .turn {
-    position: fixed;
-    top: 20%;
+    position: absolute;
+    top: 15%;
     font-size: 2em;
 }
 
