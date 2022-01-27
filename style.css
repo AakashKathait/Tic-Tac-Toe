@@ -30,14 +30,14 @@ button {
 
 .game-mode {
     position: absolute;
-    top: 10%;
+    top: 15%;
     font-size: 2em;
 }
 
 .turn {
     position: absolute;
     top: 15%;
-    font-size: 1.7em;
+    font-size: 2em;
 }
 
 .line1, .line2, .line3 {
