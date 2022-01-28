@@ -266,5 +266,6 @@ restartBtn.addEventListener('click', () => {
     pickVs.innerText = 'Pick an opponent';
     winner.classList.remove('show') 
     whosTurn.innerText = ``
+    gameMode.innerText= ``
     openApp();
 })
