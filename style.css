@@ -162,23 +162,7 @@ button {
     bottom: 10%;
 }
 
-.easy, .hard {
-    font-size: 0.7em;
-    padding: 0.4em;
-    margin: 0 .5em;
-    background-color: white;
-    border: 2px solid black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 
-
-.easy:hover, .hard:hover {
-    background-color: black;
-    border: 2px solid white;
-    color: white;
-}
 
 .choose-game button {
     font-size: 1em;

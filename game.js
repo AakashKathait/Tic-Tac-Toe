@@ -38,44 +38,25 @@ cells.forEach(cell => {
 })
 
 vsPlayer.addEventListener('click', startGame);
-vsComputer.addEventListener('click', chooseMode)
+vsComputer.addEventListener('click', computerGame)
 }
 
-// VS COMPUTER GAME
-    function chooseMode() {
-    let easyBtn = document.createElement('button')
-    let hardBtn = document.createElement('button')
-    vsPlayer.style.display = 'none'
-
-
-    easyBtn.classList.add('easy')
-    easyBtn.innerText = 'Easy'
-    hardBtn.classList.add('hard')
-    hardBtn.innerText = 'Hard'
-    pickVs.innerText = '';
-    pickVs.appendChild(easyBtn)
-    pickVs.appendChild(hardBtn)
-
-    vsComputer.classList.add('active')
-    easyBtn.addEventListener('click', easyGame)
-    hardBtn.addEventListener('click', hardGame)
-    vsComputer.removeEventListener('click', chooseMode)
+function cellEvent() {
     cells.forEach(cell => {
-        cell.removeEventListener('click', easyStart)
+        cell.addEventListener('click', easyStart, {once: true})
     })
 }
 
 //EASY MODE
-function easyGame() {
+function computerGame() {
+    vsPlayer.style.display = 'none'
     computerTurn = false;
     pickVs.innerHTML= ``
-    gameMode.innerText= `Easy Mode`
     vsComputer.classList.add('active')
     whosTurn.innerText = `Your turn!`
 
-    cells.forEach(cell => {
-        cell.addEventListener('click', easyStart, {once: true})
-    })
+
+    cellEvent()
 }
 
 function easyStart(e) {
@@ -86,6 +67,7 @@ function easyStart(e) {
         cell.removeEventListener('click')
     }else {
     placeMark(cell, player1);
+    whosTurn.innerText = ``
     }
     if (checkWinAI(player1)) {
         computerTurn = false;
@@ -94,9 +76,6 @@ function easyStart(e) {
         endGameAI(true)
     } else {
         computerMark(player2, currentClassAI)
-        if(currentClassAI == player2) {
-            whosTurn.innerText = `Your turn!`
-        }
     }
 }
 
@@ -105,15 +84,19 @@ function easyStart(e) {
         cells.forEach(cell => {
             if(!cell.classList.contains(player1) && !cell.classList.contains(player2)){
                 empltyCells.push(cell)
-                setTimeout(() => {
-                    empltyCells[0].classList.add(player2)
-                    if(checkWinAI(currentClassAI)) {
-                        endGameAI(false, currentClassAI)
-                    } 
-                }, 500);
             }
-
         });
+        cells.forEach(cell => {
+            cell.removeEventListener('click', easyStart, {once: true})
+        })
+        setTimeout(() => {
+            empltyCells[Math.floor(Math.random() * empltyCells.length)].classList.add(player2)
+            if(checkWinAI(currentClassAI)) {
+                endGameAI(false, currentClassAI)
+            } 
+            whosTurn.innerText = `Your turn!`
+            cellEvent()
+        }, 700);
         swapTurnsAI()  
         setBoardHoverClass()  
         }
@@ -131,7 +114,6 @@ function endGameAI(draw, currentClassAI) {
         winningMessage.innerText = 'Draw!'
     }else {
         winningMessage.innerText = `${computerTurn ? 'You Lost!' : 'You won!'}`
-        // whosTurn.innerText = `${computerTurn ? 'You Lost!' : 'You won!'}`
     }
     winner.classList.add('show')
 }
@@ -150,13 +132,6 @@ function checkWinAI(currentClassAI) {
             return cells[i].classList.contains(currentClassAI)
         })
     })
-}
-
-//HARD MODE (MINIMAX ALGORITHM)
-function hardGame() {
-    pickVs.innerHTML= ``
-    gameMode.innerText= `Hard Mode`
-    vsComputer.classList.add('active')
 }
 
 
