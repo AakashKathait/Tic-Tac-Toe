@@ -10,9 +10,9 @@ var app = express();
 app.use('/', express.static(__dirname + '/'));
 
 // http://localhost:8080/
-app.get('/', function(req, res){
-    res.sendfile('/index.html');
-});
+// app.get('/', function(req, res){
+//     res.sendfile('/index.html');
+// });
 
 
 app.listen(process.env.PORT || 3000, function(){
