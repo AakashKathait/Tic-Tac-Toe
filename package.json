@@ -1,0 +1,23 @@
+{
+  "name": "Tic-Tac-Toe",
+  "version": "1.0.0",
+  "description": "Tic-Tac-Toe",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AakashKathait/Tic-Tac-Toe.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AakashKathait/Tic-Tac-Toe/issues"
+  },
+  "homepage": "https://github.com/AakashKathait/Tic-Tac-Toe#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
