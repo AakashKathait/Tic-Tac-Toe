@@ -210,6 +210,7 @@ button {
 .wins {
   font-size: 3rem;
   margin-bottom: 0.25em;
+  text-align: center;
 }
 
 .restart {
