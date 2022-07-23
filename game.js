@@ -1,246 +1,351 @@
-
-const cells = document.querySelectorAll('.cell');
-const board = document.querySelector('.board')
-const winningMessage = document.querySelector('.wins')
-const winner = document.querySelector('.game-winning')
-const restartBtn = document.querySelector('.restart')
-const vsPlayer = document.querySelector('#player')
-const vsComputer = document.querySelector('#computer')
-const pickVs = document.querySelector('.choose-game-text')
-const whosTurn = document.querySelector('.turn')
-const gameMode = document.querySelector('.game-mode')
-const easyMode = document.querySelector('.easy')
-const hardMode = document.querySelector('.hard')
-const player1 = 'x'
-const player2 = 'o'
-let player2Turn
-let computerTurn
+const cells = document.querySelectorAll(".cell");
+const board = document.querySelector(".board");
+const winningMessage = document.querySelector(".wins");
+const winner = document.querySelector(".game-winning");
+const restartBtn = document.querySelector(".restart");
+const vsPlayer = document.querySelector("#player");
+const vsComputer = document.querySelector("#computer");
+const pickVs = document.querySelector(".choose-game-text");
+const whosTurn = document.querySelector(".turn");
+const gameMode = document.querySelector(".game-mode");
+const easyMode = document.querySelector("#easy");
+const hardMode = document.querySelector("#hard");
+const player1 = "x";
+const player2 = "o";
+let player2Turn;
+let computerTurn;
 const winCombo = [
-    [0,1,2],
-    [3,4,5],
-    [6,7,8],
-    [0,3,6],
-    [1,4,7],
-    [2,5,8],
-    [0,4,8],
-    [2,4,6]
-]
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
 
 //Open Game
 openApp();
 function openApp() {
-pickVs.innerText = 'Pick an opponent';
-vsPlayer.style.display = 'block'
-vsComputer.style.display = 'block'
+  pickVs.innerText = "Pick an opponent";
+  vsPlayer.style.display = "block";
+  vsComputer.style.display = "block";
 
-cells.forEach(cell => {
-    cell.removeEventListener('click', easyStart)
-})
-
-vsPlayer.addEventListener('click', startGame);
-vsComputer.addEventListener('click', computerGame)
+  cells.forEach((cell) => {
+    cell.removeEventListener("click", easyStart);
+  });
+  vsPlayer.addEventListener("click", startGame);
+  vsComputer.addEventListener("click", computerGame);
 }
 
-function cellEvent() {
-    cells.forEach(cell => {
-        cell.addEventListener('click', easyStart, {once: true})
-    })
+function easyCellEvent() {
+  hardMode.style.display = "none";
+  easyMode.classList.add("active");
+  whosTurn.innerText = `Your turn!`;
+  cells.forEach((cell) => {
+    cell.addEventListener("click", easyStart, { once: true });
+  });
+}
+function hardCellEvent() {
+  easyMode.style.display = "none";
+  hardMode.classList.add("active");
+  whosTurn.innerText = `Your turn!`;
+  cells.forEach((cell) => {
+    cell.addEventListener("click", hardStart, { once: true });
+  });
 }
 
 //EASY MODE
 function computerGame() {
-    vsPlayer.style.display = 'none'
-    computerTurn = false;
-    pickVs.innerHTML= ``
-    vsComputer.classList.add('active')
-    whosTurn.innerText = `Your turn!`
-
-
-    cellEvent()
+  vsPlayer.style.display = "none";
+  vsComputer.style.display = "none";
+  easyMode.style.display = "block";
+  hardMode.style.display = "block";
+  computerTurn = false;
+  pickVs.innerHTML = ``;
+  easyMode.addEventListener("click", easyCellEvent);
+  hardMode.addEventListener("click", hardCellEvent);
 }
 
 function easyStart(e) {
-    const cell = e.target
-    let currentClassAI = computerTurn ? player2 : player1
+  const cell = e.target;
+  let currentClassAI = computerTurn ? player2 : player1;
 
-    if(cell.classList.contains(player1) || cell.classList.contains(player2)) {
-        cell.removeEventListener('click')
-    }else {
+  if (cell.classList.contains(player1) || cell.classList.contains(player2)) {
+    cell.removeEventListener("click");
+  } else {
     placeMark(cell, player1);
-    whosTurn.innerText = ``
-    }
-    if (checkWinAI(player1)) {
-        computerTurn = false;
-        endGameAI(false, currentClassAI)
-    }else if (isDraw()) {
-        endGameAI(true)
-    } else {
-        computerMark(player2, currentClassAI)
-    }
+    whosTurn.innerText = ``;
+  }
+  if (checkWinAI(player1)) {
+    computerTurn = false;
+    endGameAI(false, currentClassAI);
+  } else if (isDraw()) {
+    endGameAI(true);
+  } else {
+    computerMark(player2, currentClassAI);
+  }
 }
 
-        function computerMark(player2, currentClassAI) {
-        let empltyCells = []
-        cells.forEach(cell => {
-            if(!cell.classList.contains(player1) && !cell.classList.contains(player2)){
-                empltyCells.push(cell)
-            }
-        });
-        cells.forEach(cell => {
-            cell.removeEventListener('click', easyStart, {once: true})
-        })
-        setTimeout(() => {
-            empltyCells[Math.floor(Math.random() * empltyCells.length)].classList.add(player2)
-            if(checkWinAI(currentClassAI)) {
-                endGameAI(false, currentClassAI)
-            } 
-            whosTurn.innerText = `Your turn!`
-            cellEvent()
-        }, 700);
-        swapTurnsAI()  
-        setBoardHoverClass()  
-        }
+const emptyCells = () => {
+  let empltyCells = [];
+  cells.forEach((cell) => {
+    if (
+      !cell.classList.contains(player1) &&
+      !cell.classList.contains(player2)
+    ) {
+      empltyCells.push(cell);
+    }
+  });
+  return empltyCells;
+};
 
-function placeMark(cell, currentClassAI)   {
-    cell.classList.add(currentClassAI)
+function computerMark(player2, currentClassAI) {
+  const availSpots = emptyCells();
+  cells.forEach((cell) => {
+    cell.removeEventListener("click", easyStart, { once: true });
+  });
+  setTimeout(() => {
+    availSpots[Math.floor(Math.random() * availSpots.length)].classList.add(
+      player2
+    );
+    if (checkWinAI(currentClassAI)) {
+      endGameAI(false, currentClassAI);
+    }
+    whosTurn.innerText = `Your turn!`;
+    easyCellEvent();
+  }, 700);
+  swapTurnsAI();
+  setBoardHoverClass();
+}
+
+function placeMark(cell, currentClassAI) {
+  cell.classList.add(currentClassAI);
 }
 
 function swapTurnsAI() {
-    computerTurn = true;
+  computerTurn = true;
 }
 
-function endGameAI(draw, currentClassAI) {
-    if (draw) {
-        winningMessage.innerText = 'Draw!'
-    }else {
-        winningMessage.innerText = `${computerTurn ? 'You Lost!' : 'You won!'}`
-    }
-    winner.classList.add('show')
+function endGameAI(draw) {
+  if (draw) {
+    winningMessage.innerText = "Draw!";
+  } else {
+    winningMessage.innerText = `${computerTurn ? "You Lost!" : "You won!"}`;
+  }
+  winner.classList.add("show");
 }
 
 function isDraw() {
-    return [...cells].every(cell => {
-        return cell.classList.contains(player1) || 
-        cell.classList.contains(player2)
-    })
+  return [...cells].every((cell) => {
+    return cell.classList.contains(player1) || cell.classList.contains(player2);
+  });
 }
-isDraw()
+isDraw();
 
 function checkWinAI(currentClassAI) {
-    return winCombo.some(combo => {
-        return combo.every(i => {
-            return cells[i].classList.contains(currentClassAI)
-        })
-    })
+  return winCombo.some((combo) => {
+    return combo.every((i) => {
+      return cells[i].classList.contains(currentClassAI);
+    });
+  });
 }
 
+//HARD MODE
+
+function hardStart(e) {
+  const cell = e.target;
+  let currentClassAI = computerTurn ? player2 : player1;
+
+  if (cell.classList.contains(player1) || cell.classList.contains(player2)) {
+    cell.removeEventListener("click");
+  } else {
+    placeMark(cell, player1);
+    whosTurn.innerText = ``;
+  }
+  if (checkWinAI(player1)) {
+    computerTurn = false;
+    endGameAI(false, currentClassAI);
+  } else if (isDraw()) {
+    endGameAI(true);
+  } else {
+    hardComputerMark(currentClassAI);
+  }
+}
+
+function hardComputerMark(currentClassAI) {
+  const availSpots = emptyCells();
+  cells.forEach((cell) => {
+    cell.removeEventListener("click", easyStart, { once: true });
+  });
+  setTimeout(() => {
+    bestSpot().classList.add(player2);
+    if (checkWinAI(currentClassAI)) {
+      endGameAI(false, currentClassAI);
+    }
+    whosTurn.innerText = `Your turn!`;
+    easyCellEvent();
+  }, 700);
+  swapTurnsAI();
+  setBoardHoverClass();
+}
+
+const bestSpot = () => {
+  return minimax(player2).cell;
+};
+
+const minimax = (player) => {
+  let availSpots = emptyCells();
+
+  if (checkWinAI(player1)) {
+    return { score: -10 };
+  } else if (checkWinAI(player2)) {
+    return { score: 10 };
+  } else if (availSpots.length === 0) {
+    return { score: 0 };
+  }
+  let moves = [];
+  for (let i = 0; i < availSpots.length; i++) {
+    let move = {};
+    move.cell = availSpots[i];
+    availSpots[i].classList.add(player);
+    if (player == player2) {
+      let result = minimax(player1);
+      move.score = result.score;
+    } else {
+      let result = minimax(player2);
+      move.score = result.score;
+    }
+    availSpots[i].classList.remove(player);
+    moves.push(move);
+  }
+
+  let bestMove;
+  if (player == player2) {
+    let bestScore = -100;
+    for (let i = 0; i < moves.length; i++) {
+      if (moves[i].score > bestScore) {
+        bestScore = moves[i].score;
+        bestMove = i;
+      }
+    }
+  } else {
+    let bestScore = 100;
+    for (var i = 0; i < moves.length; i++) {
+      if (moves[i].score < bestScore) {
+        bestScore = moves[i].score;
+        bestMove = i;
+      }
+    }
+  }
+  return moves[bestMove];
+};
 
 // VS PLAYER GAME
 
 function startGame() {
-    player2Turn = false
-    cells.forEach(cell => {
-        cell.addEventListener('click', handleClick, {once: true})
-    })
-    pickVs.innerText = '';
-    vsPlayer.classList.add('active')
-    whosTurn.innerText = `X's turn!`
-    setBoardHoverClass()
-    vsComputer.style.display = 'none'
-    vsPlayer.removeEventListener('click', startGame)
+  player2Turn = false;
+  cells.forEach((cell) => {
+    cell.addEventListener("click", handleClick, { once: true });
+  });
+  pickVs.innerText = "";
+  vsPlayer.classList.add("active");
+  whosTurn.innerText = `X's turn!`;
+  setBoardHoverClass();
+  vsComputer.style.display = "none";
+  vsPlayer.removeEventListener("click", startGame);
 }
 
-
 function handleClick(e) {
-    const cell = e.target
-    const currentClass = player2Turn ? player2 : player1 
-    placeMark(cell, currentClass);
-    if (checkWin(currentClass)) {
-        endGame(false)
-    }else if (isDraw()) {
-        endGame(true)
+  const cell = e.target;
+  const currentClass = player2Turn ? player2 : player1;
+  placeMark(cell, currentClass);
+  if (checkWin(currentClass)) {
+    endGame(false);
+  } else if (isDraw()) {
+    endGame(true);
+  } else {
+    swapTurns();
+    setBoardHoverClass();
+    if (currentClass == player2) {
+      whosTurn.innerText = `X's turn!`;
     } else {
-        swapTurns()
-        setBoardHoverClass()
-        if(currentClass == player2) {
-            whosTurn.innerText = `X's turn!`
-        }else {
-            whosTurn.innerText = `O's turn!`
-        }
+      whosTurn.innerText = `O's turn!`;
     }
+  }
 }
 
 function endGame(draw) {
-    if (draw) {
-        winningMessage.innerText = 'Draw!'
-    }else {
-        winningMessage.innerText = `${player2Turn ? 'O' : 'X'} Wins!`
-        whosTurn.innerText = `${player2Turn ? 'O' : 'X'} Wins!`
-    }
-    winner.classList.add('show')
+  if (draw) {
+    winningMessage.innerText = "Draw!";
+  } else {
+    winningMessage.innerText = `${player2Turn ? "O" : "X"} Wins!`;
+    whosTurn.innerText = `${player2Turn ? "O" : "X"} Wins!`;
+  }
+  winner.classList.add("show");
 }
 
 function isDraw() {
-    return [...cells].every(cell => {
-        return cell.classList.contains(player1) || 
-        cell.classList.contains(player2)
-    })
+  return [...cells].every((cell) => {
+    return cell.classList.contains(player1) || cell.classList.contains(player2);
+  });
 }
-isDraw()
-
+isDraw();
 
 function checkWin(currentClass) {
-    return winCombo.some(combo => {
-        return combo.every(i => {
-            return cells[i].classList.contains(currentClass)
-        })
-    })
+  return winCombo.some((combo) => {
+    return combo.every((i) => {
+      return cells[i].classList.contains(currentClass);
+    });
+  });
 }
 
-function placeMark(cell, currentClass)   {
-    cell.classList.add(currentClass)
+function placeMark(cell, currentClass) {
+  cell.classList.add(currentClass);
 }
 
 function swapTurns() {
-    player2Turn = !player2Turn;
+  player2Turn = !player2Turn;
 }
 
 function setBoardHoverClass() {
-    board.classList.remove(player1)
-    board.classList.remove(player2)
-    if (player2Turn) {
-        board.classList.add(player2)
-    }else {
-        board.classList.add(player1)
-    }
+  board.classList.remove(player1);
+  board.classList.remove(player2);
+  if (player2Turn) {
+    board.classList.add(player2);
+  } else {
+    board.classList.add(player1);
+  }
 }
 
 function checkWin(currentClass) {
-    return winCombo.some(combo => {
-        return combo.every(i => {
-            return cells[i].classList.contains(currentClass)
-        })
-    })
+  return winCombo.some((combo) => {
+    return combo.every((i) => {
+      return cells[i].classList.contains(currentClass);
+    });
+  });
 }
-
 
 // GAME END (RESTART)
 
-restartBtn.addEventListener('click', () => {
-    cells.forEach(cell => {
-        cell.classList.remove(player1)
-        cell.classList.remove(player2)
-        cell.removeEventListener('click', handleClick)
-    })
-    vsPlayer.style.display = 'block'
-    vsComputer.style.display = 'block'
-    vsPlayer.classList.remove('active')
-    vsComputer.classList.remove('active')
-    board.classList.remove(player1)
-    board.classList.remove(player2)
-    pickVs.innerText = 'Pick an opponent';
-    winner.classList.remove('show') 
-    whosTurn.innerText = ``
-    gameMode.innerText= ``
-    openApp();
-})
+restartBtn.addEventListener("click", () => {
+  cells.forEach((cell) => {
+    cell.classList.remove(player1);
+    cell.classList.remove(player2);
+    cell.removeEventListener("click", handleClick);
+  });
+  vsPlayer.style.display = "block";
+  vsComputer.style.display = "block";
+  easyMode.classList.remove("active");
+  hardMode.classList.remove("active");
+  easyMode.style.display = "none";
+  hardMode.style.display = "none";
+  board.classList.remove(player1);
+  board.classList.remove(player2);
+  pickVs.innerText = "Pick an opponent";
+  winner.classList.remove("show");
+  whosTurn.innerText = ``;
+  gameMode.innerText = ``;
+  openApp();
+});
