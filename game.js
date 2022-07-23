@@ -31,10 +31,6 @@ function openApp() {
   pickVs.innerText = "Pick an opponent";
   vsPlayer.style.display = "block";
   vsComputer.style.display = "block";
-
-  cells.forEach((cell) => {
-    cell.removeEventListener("click", easyStart);
-  });
   vsPlayer.addEventListener("click", startGame);
   vsComputer.addEventListener("click", computerGame);
 }
@@ -42,6 +38,7 @@ function openApp() {
 function easyCellEvent() {
   hardMode.style.display = "none";
   easyMode.classList.add("active");
+  setBoardHoverClass();
   whosTurn.innerText = `Your turn!`;
   cells.forEach((cell) => {
     cell.addEventListener("click", easyStart, { once: true });
@@ -50,13 +47,13 @@ function easyCellEvent() {
 function hardCellEvent() {
   easyMode.style.display = "none";
   hardMode.classList.add("active");
+  setBoardHoverClass();
   whosTurn.innerText = `Your turn!`;
   cells.forEach((cell) => {
     cell.addEventListener("click", hardStart, { once: true });
   });
 }
 
-//EASY MODE
 function computerGame() {
   vsPlayer.style.display = "none";
   vsComputer.style.display = "none";
@@ -67,6 +64,8 @@ function computerGame() {
   easyMode.addEventListener("click", easyCellEvent);
   hardMode.addEventListener("click", hardCellEvent);
 }
+
+//EASY MODE
 
 function easyStart(e) {
   const cell = e.target;
@@ -102,6 +101,7 @@ const emptyCells = () => {
 };
 
 function computerMark(player2, currentClassAI) {
+  board.classList.remove(player1);
   const availSpots = emptyCells();
   cells.forEach((cell) => {
     cell.removeEventListener("click", easyStart, { once: true });
@@ -117,7 +117,6 @@ function computerMark(player2, currentClassAI) {
     easyCellEvent();
   }, 700);
   swapTurnsAI();
-  setBoardHoverClass();
 }
 
 function placeMark(cell, currentClassAI) {
@@ -125,7 +124,7 @@ function placeMark(cell, currentClassAI) {
 }
 
 function swapTurnsAI() {
-  computerTurn = true;
+  computerTurn = !computerTurn;
 }
 
 function endGameAI(draw) {
@@ -175,9 +174,10 @@ function hardStart(e) {
 }
 
 function hardComputerMark(currentClassAI) {
-  const availSpots = emptyCells();
+  board.classList.remove(player1);
   cells.forEach((cell) => {
-    cell.removeEventListener("click", easyStart, { once: true });
+    board.classList.remove(player1);
+    cell.removeEventListener("click", hardStart, { once: true });
   });
   setTimeout(() => {
     bestSpot().classList.add(player2);
@@ -185,10 +185,9 @@ function hardComputerMark(currentClassAI) {
       endGameAI(false, currentClassAI);
     }
     whosTurn.innerText = `Your turn!`;
-    easyCellEvent();
+    hardCellEvent();
   }, 700);
   swapTurnsAI();
-  setBoardHoverClass();
 }
 
 const bestSpot = () => {
@@ -334,11 +333,14 @@ restartBtn.addEventListener("click", () => {
     cell.classList.remove(player1);
     cell.classList.remove(player2);
     cell.removeEventListener("click", handleClick);
+    cell.removeEventListener("click", hardStart);
+    cell.removeEventListener("click", easyStart);
   });
   vsPlayer.style.display = "block";
   vsComputer.style.display = "block";
   easyMode.classList.remove("active");
   hardMode.classList.remove("active");
+  vsPlayer.classList.remove("active");
   easyMode.style.display = "none";
   hardMode.style.display = "none";
   board.classList.remove(player1);
