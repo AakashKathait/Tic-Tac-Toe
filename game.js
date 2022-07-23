@@ -124,7 +124,7 @@ function placeMark(cell, currentClassAI) {
 }
 
 function swapTurnsAI() {
-  computerTurn = !computerTurn;
+  computerTurn = true;
 }
 
 function endGameAI(draw) {
