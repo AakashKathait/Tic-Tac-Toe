@@ -106,10 +106,16 @@ function computerMark(player2, currentClassAI) {
   cells.forEach((cell) => {
     cell.removeEventListener("click", easyStart, { once: true });
   });
+  const probability = Math.floor(Math.random() * 10) + 1;
+  console.log(probability);
   setTimeout(() => {
-    availSpots[Math.floor(Math.random() * availSpots.length)].classList.add(
-      player2
-    );
+    if (probability < 6) {
+      bestSpot().classList.add(player2);
+    } else {
+      availSpots[Math.floor(Math.random() * availSpots.length)].classList.add(
+        player2
+      );
+    }
     if (checkWinAI(currentClassAI)) {
       endGameAI(false, currentClassAI);
     }
