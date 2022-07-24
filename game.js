@@ -107,7 +107,6 @@ function computerMark(player2, currentClassAI) {
     cell.removeEventListener("click", easyStart, { once: true });
   });
   const probability = Math.floor(Math.random() * 10) + 1;
-  console.log(probability);
   setTimeout(() => {
     if (probability < 6) {
       bestSpot().classList.add(player2);
